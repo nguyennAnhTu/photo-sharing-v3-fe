@@ -50,7 +50,7 @@ function TopBar(props) {
             const formData = new FormData();
             formData.append(`photo`, selectedImage);
 
-            const response = await fetch(`http://localhost:8080/api/photo/new`, {
+            const response = await fetch(`https://m47ys6-8080.csb.app/api/photo/new`, {
                 method: 'POST',
                 headers: {
                     credentials: "include"
