@@ -1,0 +1,28 @@
+const fetchModel = async (url, method, body) => {
+    try {
+        const response = await fetch(`http://localhost:8080/${url}`, {
+            method: method,
+            headers: {
+                "Content-Type": "application/json",
+                credentials: "include"
+            },
+            body: JSON.stringify(body),
+            withCredentials: true,
+            credentials: "include"
+        });
+        //console.log(`response in fetch model: ${response}`)
+
+        // if (!response.ok) {
+        //     //throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+        //     return response;
+        // }
+
+        //return await response.json();
+        return response;
+    } catch (error) {
+        console.error(`Error fetching model from ${url}:`, error.message);
+        throw error;
+    }
+}
+
+export default fetchModel;
