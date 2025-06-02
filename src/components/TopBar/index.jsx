@@ -62,7 +62,7 @@ function TopBar(props) {
       formData.append(`photo`, selectedImage);
 
       const response = await fetch(
-        `https://9cyzc7-8081.csb.app/api/photo/new`,
+        `https://9cyzc7-8080.csb.app/api/photo/new`,
         {
           method: "POST",
           headers: {

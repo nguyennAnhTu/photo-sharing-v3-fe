@@ -1,6 +1,6 @@
 const fetchModel = async (url, method, body) => {
   try {
-    const response = await fetch(`https://9cyzc7-8081.csb.app/${url}`, {
+    const response = await fetch(`https://9cyzc7-8080.csb.app/${url}`, {
       method: method,
       headers: {
         "Content-Type": "application/json",
