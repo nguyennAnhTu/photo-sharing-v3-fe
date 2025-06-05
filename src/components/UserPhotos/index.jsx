@@ -79,11 +79,43 @@ function UserPhotos(props) {
             setError(error);
         }
     }
+
+    const handleDeleteComment = async (photoId, commentId) => {
+        try {
+            const response = await fetchModel(
+                `api/photo/commentsOfPhoto/${photoId}/${commentId}`,
+                'DELETE'
+            );
+            if (response.status===200) {
+                alert("Delete comment success");
+                setComments(comments.filter((cmt) => cmt._id !== commentId));
+            }
+        } catch(error) {
+            console.log(error);
+            setError(error);
+        }
+    }
+
+    const handleDeletePhoto = async (photoId) => {
+        try {
+            const response = await fetchModel(
+                `api/photo/${photoId}`,
+                'DELETE'
+            );
+            if (response.status===200) {
+                alert("Delete photo success");
+                setPhotos(photos.filter((photo) => photo._id !== photoId));
+            }
+        } catch (error) {
+            console.log(error);
+            setError(error);
+        }
+    }
     
 
     if (props.loginUser) {
         if (loading) return <Typography>Loading...</Typography>;
-        if (error) return <Typography color="error">Error: {error}</Typography>;
+        //if (error) return <Typography color="error">Error: {error}</Typography>;
         if (!user) {
             return <Typography variant="body1">User not found</Typography>;
         }
@@ -110,6 +142,11 @@ function UserPhotos(props) {
                                     alt={`Photo by ${user.first_name}`}
                                 >
                                 </CardMedia>
+                                {photo.user_id === props.loginUser._id && (
+                                    <button onClick={() => handleDeletePhoto(photo._id)}>
+                                        Delete photo
+                                    </button>
+                                )} 
 
                                 <CardContent>
                                     <Typography variant="body2" color={"text.secondary"} gutterBottom>
@@ -129,6 +166,12 @@ function UserPhotos(props) {
                                                 </Link>
                                                 : {cmt.comment}
                                             </Typography>
+
+                                            {cmt.user_id === props.loginUser._id && (
+                                                <button onClick={() => handleDeleteComment(photo._id, cmt._id)}>
+                                                    Delete
+                                                </button>
+                                            )}
                                         </Paper>
                                         
                                     )))

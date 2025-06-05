@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Grid, Paper, Typography, TextField, Button, Dialog } from "@mui/material";
 import fetchModel from "../../libs/fetchModelData";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 function LoginRegister(props) {
     const [loginUsername, setLoginUsername] = useState('');
@@ -129,6 +129,11 @@ function LoginRegister(props) {
                     Đăng nhập
                     </Button>
                 </form>
+
+                <p>
+                    Not have account? <Link to="/register">Register here</Link>
+                </p>
+                
                 </Paper>
             </Grid>
 

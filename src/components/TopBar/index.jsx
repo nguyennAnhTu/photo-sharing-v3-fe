@@ -86,17 +86,6 @@ function TopBar(props) {
                     <Button
                         variant="contained"
                         onClick={handleOpenDialog}
-                        sx={{
-                            textTransform: "none",
-                            fontWeight: 600,
-                            px: 2,
-                            py: 1,
-                            borderRadius: 2,
-                            bgcolor: "#4caf50",
-                            color: "white",
-                            mr: 2,
-                            "&:hover": { bgcolor: "#388e3c" },
-                        }}
                     >
                         Upload
                     </Button>

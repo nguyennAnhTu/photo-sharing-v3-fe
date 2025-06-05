@@ -38,7 +38,7 @@ function UserList(props) {
                         Users
                     </Typography>
                 )}
-                <List component="nav">
+                {/* <List component="nav">
                     {users.map((user) => (
                     <React.Fragment key={user._id}>
                         <ListItem component={Link} to={`/users/${user._id}`}>
@@ -49,7 +49,23 @@ function UserList(props) {
                         </ListItem>
                     </React.Fragment>
                     ))}
-                </List>
+                </List> */}
+                
+                    {users.map((user) => (
+                    <div style={{marginBottom:'25px'}} >
+                    <Link to={`/users/${user._id}`}>
+                        <h4>{user.first_name} {user.last_name}</h4>
+                        {/* (isInSidebar && (
+                            {user.occupation} - {user.location}
+                        )) */}
+                        
+                    </Link>
+                    {!isInSidebar && (
+                        <p>{user.occupation} - {user.location}</p>
+                    )}
+                    </div>
+                    ))}
+                    
             </div>
         )
     } else {

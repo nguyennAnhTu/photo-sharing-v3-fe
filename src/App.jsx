@@ -13,6 +13,7 @@ import TopBar from "./components/TopBar";
 import UserDetail from "./components/UserDetail";
 import UserPhotos from "./components/UserPhotos";
 import fetchModel from "./libs/fetchModelData";
+import Register from "./components/Register";
 
 const Layout = (props) => {
     return (
@@ -63,41 +64,31 @@ const App = (props) => {
     };
     fetchData();
   }, [userIdCookie]);
-    // return (
-    //     <Router>
-    //       <Routes>
-    //         <Route path="/" element={<Layout loginUser={loginUser}/>}>
-    //           <Route path="/users" element={<UserList loginUser={loginUser}/>}></Route>
-    //           <Route path="/users/:userId" element={<UserDetail loginUser={loginUser} />} />
-    //           <Route path="/login-register" element={<LoginRegister onLogin={setLoginUser} loginUser={loginUser} />} />
-    //         </Route>
-    //       </Routes>
-    //     </Router>
-    // )
+
     return (
       <Router>
-        <div className='roott'>
+        <div>
           <Grid container spacing={10}>
-            <Grid item xs={12} className="topbar-sticky" >
+            <Grid item xs={12}>
               <TopBar 
                 onLogin={setLoginUser} 
-                //onPhotoUpload={handlePhotoUpload} 
                 loginUser={loginUser}
                 
               />
             </Grid>
               {!!loginUser && (<Grid item sm={2}>
-                <Paper className="main-grid-item">
+                <Paper >
                   <UserList loginUser={loginUser} />
                 </Paper>
               </Grid>)}
             <Grid item sm={!!loginUser ? 10 : 12} >
-              <div className="main-grid-item ">
+              <div>
                   <Routes>
                     <Route
                         path={"/login-register"}
                         element = {<LoginRegister onLogin={setLoginUser} loginUser={loginUser}/>}
-                    /> 
+                    />
+                    <Route path="/register" element={<Register />} />
                     <Route
                         path={"/users/:userId"}
                         element = {<UserDetail 
@@ -113,7 +104,7 @@ const App = (props) => {
                     />
                     <Route path="/users" element={<UserList loginUser={loginUser}/>} />
                     <Route path="/*" element = {<LoginRegister onLogin={setLoginUser} loginUser={loginUser}/>} />
-                  </Routes>            
+                  </Routes>
               </div>
             </Grid>
           </Grid>
