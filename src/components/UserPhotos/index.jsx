@@ -10,6 +10,8 @@ function UserPhotos(props) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState();
     const [comments, setComments] = useState({});
+    const [editingComment, setEditingComment] = useState(null);
+    const [editContent, setEditContent] = useState("");
 
     useEffect(() => {
         const fetchPhotos = async () => {
@@ -111,6 +113,60 @@ function UserPhotos(props) {
             setError(error);
         }
     }
+
+    const handleEditComment = (photoId, commentId, content) => {
+        setEditingComment({photoId, commentId, content});
+        setEditContent(content);
+    };
+
+    const handleSaveComment = async () => {
+        if (!editContent.trim()) {
+            setError("Comment cannot be empty");
+            return;
+        }
+
+        try {
+            const { photoId, commentId } = editingComment;
+            const response = await fetchModel(
+                `api/photo/commentsOfPhoto/${photoId}/${commentId}`,
+                'PUT',
+                { comment: editContent }
+                
+            );
+            
+            if (response.status === 200) {
+                alert("Update comment success");
+                setPhotos((prevPhotos) =>
+                    prevPhotos.map((photo) =>
+                        photo._id === photoId
+                            ? {
+                                  ...photo,
+                                  comments: photo.comments.map((cmt) =>
+                                      cmt._id === commentId
+                                          ? { ...cmt, comment: editContent }
+                                          : cmt
+                                  ),
+                              }
+                            : photo
+                    )
+                );
+                setEditingComment(null);
+                setEditContent("");
+                setError(null);
+            } else {
+                setError( "Failed to update comment");
+            }
+        } catch (error) {
+            console.error("Error updating comment:", error);
+            setError(error.message);
+        }
+    };
+
+    const handleCancelEdit = () => {
+        setEditingComment(null);
+        setEditContent("");
+        setError(null);
+    };
     
 
     if (props.loginUser) {
@@ -168,9 +224,13 @@ function UserPhotos(props) {
                                             </Typography>
 
                                             {cmt.user_id === props.loginUser._id && (
+                                                <div>
                                                 <button onClick={() => handleDeleteComment(photo._id, cmt._id)}>
                                                     Delete
                                                 </button>
+
+                                                <button onClick={() => handleEditComment(photo._id, cmt._id, cmt.comment)}>Edit</button>
+                                                </div>
                                             )}
                                         </Paper>
                                         
@@ -201,6 +261,56 @@ function UserPhotos(props) {
                         </Grid>
                     ))}
                 </Grid>
+
+                {editingComment && (
+                <div
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: 1000,
+                    }}
+                >
+                    <div
+                        style={{
+                            backgroundColor: 'white',
+                            padding: '20px',
+                            borderRadius: '5px',
+                            width: '400px',
+                            maxWidth: '90%',
+                        }}
+                    >
+                        <h3 style={{ margin: '0 0 10px' }}>Edit Comment</h3>
+                        <input
+                            type="text"
+                            value={editContent}
+                            onChange={(e) => setEditContent(e.target.value)}
+                            style={{ width: '100%', padding: '10px', marginBottom: '10px', border: '1px solid #ccc' }}
+                        />
+                        {error && <p style={{ color: 'red', margin: '0 0 10px' }}>{error}</p>}
+                        <div style={{ textAlign: 'right' }}>
+                            <button
+                                onClick={handleSaveComment}
+                                style={{ padding: '5px 15px', marginRight: '10px', backgroundColor: '#4CAF50', color: 'white', border: 'none' }}
+                            >
+                                Save
+                            </button>
+                            <button
+                                onClick={handleCancelEdit}
+                                style={{ padding: '5px 15px', backgroundColor: '#f44336', color: 'white', border: 'none' }}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
             </div>
         )
     }
