@@ -1,12 +1,5 @@
 import { useState } from "react";
-import {
-  Grid,
-  Paper,
-  Typography,
-  TextField,
-  Button,
-  Dialog,
-} from "@mui/material";
+import { Grid, Paper, Typography, TextField, Button } from "@mui/material";
 import fetchModel from "../../libs/fetchModelData";
 import { Navigate } from "react-router-dom";
 
@@ -19,11 +12,8 @@ function LoginRegister(props) {
   const [registerPassword, setRegisterPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [location, setLocation] = useState("");
-  const [userid, setUserid] = useState();
   const [occupation, setOccupation] = useState();
   const [description, setDescription] = useState();
-  const [loginFalse, setLoginFalse] = useState(false);
-  const [open, setOpen] = useState(true);
   const [error, setError] = useState(null);
 
   const handleLoginSubmit = async (e) => {
@@ -35,7 +25,6 @@ function LoginRegister(props) {
       });
       console.log(response);
       if (response.status === 400) {
-        setLoginFalse(true);
         alert("Thong tin dang nhap khong chinh xac");
         return;
       }
@@ -44,12 +33,8 @@ function LoginRegister(props) {
       console.log(userData);
       await props.onLogin(userData);
     } catch (error) {
-      setLoginFalse(true);
+      setError(error);
     }
-  };
-
-  const handleOpenRegisterForm = () => {
-    setOpen(true);
   };
 
   const handleRegisterSubmit = async (e) => {
